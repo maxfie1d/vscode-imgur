@@ -76,12 +76,15 @@ function paste(storagePath: string) {
                 // プレースホルダーと実際の画像のURLを入れ替える
                 edit.replace(new vscode.Range(startPosition, endPosition), `![Image](${imageUrl})`);
                 eventEmitter.fire({
-                    type: UploadStatus.UploadComplete,
+                    type: UploadStatus.SuccessfullyUploaded,
                     url: imageUrl
                 });
             });
         }).catch(err => {
-            console.log(err);
+            eventEmitter.fire({
+                type: UploadStatus.FailedToUpload,
+                error: err.toString()
+            });
         });
     });
 }

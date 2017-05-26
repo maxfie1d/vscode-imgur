@@ -36,9 +36,15 @@ export class StatusBarItem extends vscode.Disposable {
                 case UploadStatus.Uploading:
                     this.subject.next("Uploading image...");
                     break;
-                case UploadStatus.UploadComplete:
+                case UploadStatus.SuccessfullyUploaded:
                     this.subject.next("Image upload completed: " + e.url);
                     this.setTimerToClearNotification();
+                    break;
+                case UploadStatus.FailedToUpload:
+                    this.subject.next("Failed to upload image");
+                    this.setTimerToClearNotification();
+                    vscode.window.showErrorMessage("Failed to upload image to imgur: " + e.error);
+                    break;
                 default:
                     break;
             }
