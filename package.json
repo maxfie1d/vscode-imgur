@@ -58,6 +58,7 @@
     "vscode": "^1.1.0"
   },
   "dependencies": {
+    "@reactivex/rxjs": "^5.4.0",
     "@rmp135/imgur": "^0.4.0"
   }
 }

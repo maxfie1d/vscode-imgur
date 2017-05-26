@@ -5,13 +5,21 @@ import * as path from "path";
 import { spawn } from "child_process";
 import { Client } from "@rmp135/imgur";
 import * as fs from "fs";
+import { UploadSatusChangedEventArgs, UploadStatus } from "./notification/types";
+import { StatusBarItem } from "./notification/statusbar";
 
+let eventEmitter: vscode.EventEmitter<UploadSatusChangedEventArgs>;
 
 export function activate(context: vscode.ExtensionContext) {
     // コマンドを登録
     context.subscriptions.push(vscode.commands.registerCommand("vscode-imgur.pasteImage", () => {
         paste(context.storagePath);
     }));
+
+    eventEmitter = new vscode.EventEmitter<UploadSatusChangedEventArgs>();
+    context.subscriptions.push(eventEmitter);
+    const statusbarItem = new StatusBarItem();
+    statusbarItem.subscribe(eventEmitter.event);
 }
 
 
@@ -50,11 +58,20 @@ function paste(storagePath: string) {
         // 画像をBase64形式にエンコードする
         const imageAsBase64 = fs.readFileSync(imagePath, "base64");
         // 一時的に保存された画像をimgurにアップロードする
+
+        eventEmitter.fire({
+            type: UploadStatus.Uploading
+        });
+
         client.Image.upload(imageAsBase64).then(result => {
             editor.edit(edit => {
                 // アップロード画像のURLをテキストエディタに追加する
                 const imageUrl = result.data.link;
                 edit.insert(editor.selection.start, imageUrl);
+                eventEmitter.fire({
+                    type: UploadStatus.UploadComplete,
+                    url: imageUrl
+                });
             });
         }).catch(err => {
             console.log(err);
