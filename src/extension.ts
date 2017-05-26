@@ -57,17 +57,24 @@ function paste(storagePath: string) {
         const client = new Client(credential);
         // 画像をBase64形式にエンコードする
         const imageAsBase64 = fs.readFileSync(imagePath, "base64");
-        // 一時的に保存された画像をimgurにアップロードする
+
+        const startPosition = editor.selection.start;
+        const endPosition = startPosition.translate(0, markdownPlaceholder.length);
 
         eventEmitter.fire({
             type: UploadStatus.Uploading
         });
+        editor.edit(edit => {
+            // プレースホルダーを挿入する
+            edit.insert(editor.selection.start, markdownPlaceholder);
+        });
 
+        // 一時的に保存された画像をimgurにアップロードする
         client.Image.upload(imageAsBase64).then(result => {
             editor.edit(edit => {
-                // アップロード画像のURLをテキストエディタに追加する
                 const imageUrl = result.data.link;
-                edit.insert(editor.selection.start, imageUrl);
+                // プレースホルダーと実際の画像のURLを入れ替える
+                edit.replace(new vscode.Range(startPosition, endPosition), `![Image](${imageUrl})`);
                 eventEmitter.fire({
                     type: UploadStatus.UploadComplete,
                     url: imageUrl
@@ -159,3 +166,5 @@ const credential = {
     client_id: "d30588a5b736fa8",
     client_secret: "3942aacc9003724fc517e5c732ab5c23fe804166"
 };
+
+const markdownPlaceholder = "![uploading...](http://imgur.com/uploading.png)";
