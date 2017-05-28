@@ -2,13 +2,11 @@
 
 import * as vscode from "vscode";
 import { UploadSatusChangedEventArgs, UploadStatus } from "./types";
-import * as rx from "@reactivex/rxjs";
 
 
 export class StatusBarItem extends vscode.Disposable {
     private statusbarItem: vscode.StatusBarItem;
     private disposables: vscode.Disposable[];
-    private subject: rx.Subject<string>;
     private _timer: NodeJS.Timer;
 
     constructor() {
@@ -22,11 +20,10 @@ export class StatusBarItem extends vscode.Disposable {
 
         this.disposables = [];
         this.disposables.push(this.statusbarItem);
+    }
 
-        this.subject = new rx.Subject<string>();
-        this.subject.subscribe(x => {
-            this.statusbarItem.text = x;
-        });
+    private updateText(s: string) {
+        this.statusbarItem.text = s;
     }
 
     public subscribe(event: vscode.Event<UploadSatusChangedEventArgs>) {
@@ -34,14 +31,14 @@ export class StatusBarItem extends vscode.Disposable {
             this.cancelTimerToClearNotification();
             switch (e.type) {
                 case UploadStatus.Uploading:
-                    this.subject.next("Uploading image...");
+                    this.updateText("Uploading image...");
                     break;
                 case UploadStatus.SuccessfullyUploaded:
-                    this.subject.next("Image upload completed: " + e.url);
+                    this.updateText("Image upload completed: " + e.url);
                     this.setTimerToClearNotification();
                     break;
                 case UploadStatus.FailedToUpload:
-                    this.subject.next("Failed to upload image");
+                    this.updateText("Failed to upload image");
                     this.setTimerToClearNotification();
                     vscode.window.showErrorMessage("Failed to upload image to imgur: " + e.error);
                     break;
@@ -64,7 +61,7 @@ export class StatusBarItem extends vscode.Disposable {
      */
     private setTimerToClearNotification() {
         this._timer = setTimeout(() => {
-            this.subject.next("");
+            this.updateText("");
             this._timer = undefined;
         }, 5000);
     }

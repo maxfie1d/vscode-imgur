@@ -3,7 +3,7 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import { spawn } from "child_process";
-import { Client } from "@rmp135/imgur";
+import { Client } from "@maxfield/imgur";
 import * as fs from "fs";
 import { UploadSatusChangedEventArgs, UploadStatus } from "./notification/types";
 import { StatusBarItem } from "./notification/statusbar";
