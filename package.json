@@ -2,13 +2,14 @@
   "name": "vscode-imgur",
   "displayName": "vscode-imgur",
   "description": "imgur integration for vscode",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "publisher": "MaxfieldWalker",
   "galleryBanner": {
     "color": "#000",
     "theme": "dark"
   },
-  "icon": "",
+  "preview": true,
+  "icon": "static/icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/MaxfieldWalker/vscode-imgur"
