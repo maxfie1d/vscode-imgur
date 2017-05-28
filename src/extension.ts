@@ -5,13 +5,22 @@ import * as path from "path";
 import { spawn } from "child_process";
 import { Client } from "@rmp135/imgur";
 import * as fs from "fs";
+import { UploadSatusChangedEventArgs, UploadStatus } from "./notification/types";
+import { StatusBarItem } from "./notification/statusbar";
+import { buildCredential } from "./imgur/credential";
 
+let eventEmitter: vscode.EventEmitter<UploadSatusChangedEventArgs>;
 
 export function activate(context: vscode.ExtensionContext) {
     // コマンドを登録
     context.subscriptions.push(vscode.commands.registerCommand("vscode-imgur.pasteImage", () => {
         paste(context.storagePath);
     }));
+
+    eventEmitter = new vscode.EventEmitter<UploadSatusChangedEventArgs>();
+    context.subscriptions.push(eventEmitter);
+    const statusbarItem = new StatusBarItem();
+    statusbarItem.subscribe(eventEmitter.event);
 }
 
 
@@ -28,6 +37,13 @@ function paste(storagePath: string) {
     if (fileUri.scheme === "untitled") {
         vscode.window.showInformationMessage(
             "You need to save file first to paste a image");
+        return;
+    }
+
+    const credential = buildCredential();
+    if (!credential.client_id) {
+        // client_idが無ければimgurにアップロードできない
+        vscode.window.showInformationMessage("client_id is required to upload a image to imgur.");
         return;
     }
 
@@ -49,15 +65,38 @@ function paste(storagePath: string) {
         const client = new Client(credential);
         // 画像をBase64形式にエンコードする
         const imageAsBase64 = fs.readFileSync(imagePath, "base64");
+
+        const startPosition = editor.selection.start;
+        const endPosition = startPosition.translate(0, markdownPlaceholder.length);
+
+        eventEmitter.fire({
+            type: UploadStatus.Uploading
+        });
+        editor.edit(edit => {
+            // プレースホルダーを挿入する
+            edit.insert(editor.selection.start, markdownPlaceholder);
+        });
+
         // 一時的に保存された画像をimgurにアップロードする
         client.Image.upload(imageAsBase64).then(result => {
+            const imageUrl = result.data.link;
             editor.edit(edit => {
-                // アップロード画像のURLをテキストエディタに追加する
-                const imageUrl = result.data.link;
-                edit.insert(editor.selection.start, imageUrl);
+                // プレースホルダーと実際の画像のURLを入れ替える
+                edit.replace(new vscode.Range(startPosition, endPosition), `![Image](${imageUrl})`);
+            });
+            eventEmitter.fire({
+                type: UploadStatus.SuccessfullyUploaded,
+                url: imageUrl
             });
         }).catch(err => {
-            console.log(err);
+            // プレースホルダーを削除する
+            editor.edit(edit => {
+                edit.delete(new vscode.Range(startPosition, endPosition));
+            });
+            eventEmitter.fire({
+                type: UploadStatus.FailedToUpload,
+                error: err.toString()
+            });
         });
     });
 }
@@ -137,8 +176,4 @@ export function deactivate() {
 }
 
 
-const credential = {
-    access_token: "e4ccbe673427426b0f22efa96a10f91fd32e4c24",
-    client_id: "d30588a5b736fa8",
-    client_secret: "3942aacc9003724fc517e5c732ab5c23fe804166"
-};
+const markdownPlaceholder = "![uploading...](http://i.imgur.com/uploading.png)";

@@ -2,13 +2,14 @@
   "name": "vscode-imgur",
   "displayName": "vscode-imgur",
   "description": "imgur integration for vscode",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "publisher": "MaxfieldWalker",
   "galleryBanner": {
     "color": "#000",
     "theme": "dark"
   },
-  "icon": "",
+  "preview": true,
+  "icon": "static/icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/MaxfieldWalker/vscode-imgur"
@@ -29,6 +30,17 @@
   ],
   "main": "./out/src/extension",
   "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "vscode-imgur configuration",
+      "properties": {
+        "vscode-imgur.client_id": {
+          "type": "string",
+          "default": "",
+          "description": "Imgur client id"
+        }
+      }
+    },
     "commands": [
       {
         "command": "vscode-imgur.pasteImage",
@@ -58,6 +70,7 @@
     "vscode": "^1.1.0"
   },
   "dependencies": {
-    "@rmp135/imgur": "^0.4.0"
+    "@reactivex/rxjs": "^5.4.0",
+    "imgur": "git://github.com/MaxfieldWalker/imgur.git"
   }
 }
