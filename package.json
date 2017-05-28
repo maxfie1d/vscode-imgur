@@ -30,6 +30,17 @@
   ],
   "main": "./out/src/extension",
   "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "vscode-imgur configuration",
+      "properties": {
+        "vscode-imgur.client_id": {
+          "type": "string",
+          "default": "",
+          "description": "Imgur client id"
+        }
+      }
+    },
     "commands": [
       {
         "command": "vscode-imgur.pasteImage",

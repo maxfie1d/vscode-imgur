@@ -7,6 +7,7 @@ import { Client } from "@rmp135/imgur";
 import * as fs from "fs";
 import { UploadSatusChangedEventArgs, UploadStatus } from "./notification/types";
 import { StatusBarItem } from "./notification/statusbar";
+import { buildCredential } from "./imgur/credential";
 
 let eventEmitter: vscode.EventEmitter<UploadSatusChangedEventArgs>;
 
@@ -36,6 +37,13 @@ function paste(storagePath: string) {
     if (fileUri.scheme === "untitled") {
         vscode.window.showInformationMessage(
             "You need to save file first to paste a image");
+        return;
+    }
+
+    const credential = buildCredential();
+    if (!credential.client_id) {
+        // client_idが無ければimgurにアップロードできない
+        vscode.window.showInformationMessage("client_id is required to upload a image to imgur.");
         return;
     }
 
@@ -167,11 +175,5 @@ export function deactivate() {
 
 }
 
-
-const credential = {
-    // access_token: "e4ccbe673427426b0f22efa96a10f91fd32e4c24",
-    client_id: "d30588a5b736fa8",
-    // client_secret: "3942aacc9003724fc517e5c732ab5c23fe804166"
-};
 
 const markdownPlaceholder = "![uploading...](http://i.imgur.com/uploading.png)";
