@@ -71,16 +71,20 @@ function paste(storagePath: string) {
 
         // 一時的に保存された画像をimgurにアップロードする
         client.Image.upload(imageAsBase64).then(result => {
+            const imageUrl = result.data.link;
             editor.edit(edit => {
-                const imageUrl = result.data.link;
                 // プレースホルダーと実際の画像のURLを入れ替える
                 edit.replace(new vscode.Range(startPosition, endPosition), `![Image](${imageUrl})`);
-                eventEmitter.fire({
-                    type: UploadStatus.SuccessfullyUploaded,
-                    url: imageUrl
-                });
+            });
+            eventEmitter.fire({
+                type: UploadStatus.SuccessfullyUploaded,
+                url: imageUrl
             });
         }).catch(err => {
+            // プレースホルダーを削除する
+            editor.edit(edit => {
+                edit.delete(new vscode.Range(startPosition, endPosition));
+            });
             eventEmitter.fire({
                 type: UploadStatus.FailedToUpload,
                 error: err.toString()
