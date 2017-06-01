@@ -142,9 +142,12 @@ function paste(storagePath: string) {
             type: UploadStatus.Uploading
         });
 
-        // ダミーURLを挿入する前にダミーURLの場所を保持しておく
-        const dummyUrlStartPosition = editor.selection.start;
-        const dummyUrlEndPosition = dummyUrlStartPosition.translate(0, markdownPlaceholder.length);
+        // ダミーURLを挿入する前にダミーURLの範囲を保持しておく
+        const dummyUrlRange = new vscode.Range(
+            editor.selection.start,
+            editor.selection.start.translate(0, markdownPlaceholder.length)
+        );
+
         // ダミーURLを挿入
         editor.edit(edit => {
             // プレースホルダーを挿入する
@@ -164,7 +167,7 @@ function paste(storagePath: string) {
             const imageUrl = result.data.link;
             editor.edit(edit => {
                 // プレースホルダーと実際の画像のURLを入れ替える
-                edit.replace(new vscode.Range(dummyUrlStartPosition, dummyUrlEndPosition), `![Image](${imageUrl})`);
+                edit.replace(dummyUrlRange, `![Image](${imageUrl})`);
             });
             eventEmitter.fire({
                 type: UploadStatus.SuccessfullyUploaded,
@@ -181,7 +184,7 @@ function paste(storagePath: string) {
 
             // プレースホルダーを削除する
             editor.edit(edit => {
-                edit.delete(new vscode.Range(dummyUrlStartPosition, dummyUrlEndPosition));
+                edit.delete(dummyUrlRange);
             });
             eventEmitter.fire({
                 type: UploadStatus.FailedToUpload,
