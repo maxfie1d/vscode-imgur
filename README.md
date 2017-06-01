@@ -19,7 +19,7 @@ ext install vscode-imgur
 ```
 
 ### Configuration
-Open vscode settings by pressing <kbd>Ctrl</kbd> + <kbd>,</kbd> (Windows) or <kbd>⌘</kbd> + <kbd>,</kbd> (macOS),
+Open vscode settings by pressing <kbd>Ctrl</kbd> + <kbd>,</kbd> (Windows) or <kbd>⌘,</kbd> (macOS),
 and add your imgur `client_id` like this. 
 
 ```json
@@ -28,7 +28,7 @@ and add your imgur `client_id` like this.
 }
 ```
 
-You can get a client_id by [creating an application](https://api.imgur.com/oauth2/addclient) on imgur.
+You can get a `client_id` by [creating an application](https://api.imgur.com/oauth2/addclient) on imgur.
 
 ### Paste to upload your image on clipboard
 Set the cursor to the position where you want to insert the image url, and press
