@@ -2,7 +2,7 @@
   "name": "vscode-imgur",
   "displayName": "vscode-imgur",
   "description": "imgur integration for vscode",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "MaxfieldWalker",
   "galleryBanner": {
     "color": "#000",
