@@ -134,7 +134,7 @@ function paste(storagePath: string) {
         // クリップボードにコピーされているものが画像でなければ，
         // 各スクリプトは"no image"を返す
         if (imagePath === "no image") {
-            vscode.window.showInformationMessage("Copied object is not a image.");
+            vscode.window.showInformationMessage("Object on clipboard is not a image.");
             return;
         }
 
