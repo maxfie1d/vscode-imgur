@@ -30,6 +30,36 @@ and add your imgur `client_id` like this.
 
 You can get a client_id by [creating an application](https://api.imgur.com/oauth2/addclient) on imgur.
 
+### Paste to upload your image on clipboard
+Set the cursor to the position where you want to insert the image url, and press
+<kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>V</kbd> (Windows), or <kbd>⌘⌥V</kbd> (macOS).
+
+
+## Upload mode
+
+### Anonymous upload
+If you want anonymous upload, give your `client_id`, and be sure `preferUserUpload` is `false`.
+`settings.json` would be as below.
+
+```json
+{
+    "vscode-imgur.client_id": "<your client_id here>",
+    "vscode-imgur.preferUserUpload": false
+}
+```
+
+### User upload
+If you want to upload image belonging to your imgur account, 
+give your `client_id`, `client_secret`, and be sure `preferUserUpload` is `true`.
+`settings.json` would be as below.
+
+```json
+{
+    "vscode-imgur.client_id": "<your client_id here>",
+    "vscode-imgur.client_secret": "<your client_secret here>",
+    "vscode-imgur.preferUserUpload": true
+}
+```
 
 ## Author
 [Maxfield Walker](https://github.com/MaxfieldWalker)
