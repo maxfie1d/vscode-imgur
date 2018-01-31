@@ -70,7 +70,10 @@ please add your album id to the settinngs.
 {
     // If album url is https://imgur.com/a/p1RDg,
     // then album id is p1RDg.
-    "vscode-imgur.album_id": "<album id here>"
+    "vscode-imgur.album_id": "<album id here>",
+
+    // And don't forget to set preferUserUpload to true
+    "vscode-imgur.preferUserUpload": true
 }
 
 ## Author
