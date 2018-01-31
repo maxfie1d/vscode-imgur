@@ -1,90 +1,90 @@
 {
-  "name": "vscode-imgur",
-  "displayName": "vscode-imgur",
-  "description": "imgur integration for vscode",
-  "version": "0.0.2",
-  "publisher": "MaxfieldWalker",
-  "galleryBanner": {
-    "color": "#000",
-    "theme": "dark"
-  },
-  "preview": true,
-  "icon": "static/icon.png",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/MaxfieldWalker/vscode-imgur"
-  },
-  "bugs": {
-    "url": "https://github.com/MaxfieldWalker/vscode-imgur/issues"
-  },
-  "homepage": "",
-  "license": "MIT",
-  "engines": {
-    "vscode": "^1.12.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "onCommand:vscode-imgur.pasteImage"
-  ],
-  "main": "./out/src/extension",
-  "contributes": {
-    "configuration": {
-      "type": "object",
-      "title": "vscode-imgur configuration",
-      "properties": {
-        "vscode-imgur.client_id": {
-          "type": "string",
-          "default": "",
-          "description": "Imgur client_id"
-        },
-        "vscode-imgur.client_secret": {
-          "type": "string",
-          "default": "",
-          "description": "Imgur client_secret"
-        },
-        "vscode-imgur.preferUserUpload": {
-          "type": "boolean",
-          "default": false,
-          "description": "True if you prefer user upload, otherwise false"
-        },
-        "vscode-imgur.album_id": {
-          "type": "string",
-          "default": "",
-          "description": "Album id to upload images to"
-        }
-      }
+    "name": "vscode-imgur",
+    "displayName": "vscode-imgur",
+    "description": "imgur integration for vscode",
+    "version": "0.0.3",
+    "publisher": "MaxfieldWalker",
+    "galleryBanner": {
+        "color": "#000",
+        "theme": "dark"
     },
-    "commands": [
-      {
-        "command": "vscode-imgur.pasteImage",
-        "title": "Paste Image"
-      }
+    "preview": true,
+    "icon": "static/icon.png",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/MaxfieldWalker/vscode-imgur"
+    },
+    "bugs": {
+        "url": "https://github.com/MaxfieldWalker/vscode-imgur/issues"
+    },
+    "homepage": "",
+    "license": "MIT",
+    "engines": {
+        "vscode": "^1.12.0"
+    },
+    "categories": [
+        "Other"
     ],
-    "keybindings": [
-      {
-        "command": "vscode-imgur.pasteImage",
-        "key": "ctrl+alt+v",
-        "mac": "cmd+alt+v",
-        "when": "editorTextFocus"
-      }
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "tsc -p ./",
-    "compile": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "node ./node_modules/vscode/bin/test"
-  },
-  "devDependencies": {
-    "@types/mocha": "^2.2.41",
-    "@types/node": "^7.0.22",
-    "mocha": "^3.4.2",
-    "typescript": "^2.3.3",
-    "vscode": "^1.1.0"
-  },
-  "dependencies": {
-    "@maxfield/imgur": "^0.4.1"
-  }
+    "activationEvents": [
+        "onCommand:vscode-imgur.pasteImage"
+    ],
+    "main": "./out/src/extension",
+    "contributes": {
+        "configuration": {
+            "type": "object",
+            "title": "vscode-imgur configuration",
+            "properties": {
+                "vscode-imgur.client_id": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Imgur client_id"
+                },
+                "vscode-imgur.client_secret": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Imgur client_secret"
+                },
+                "vscode-imgur.preferUserUpload": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "True if you prefer user upload, otherwise false"
+                },
+                "vscode-imgur.album_id": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Album id to upload images to"
+                }
+            }
+        },
+        "commands": [
+            {
+                "command": "vscode-imgur.pasteImage",
+                "title": "Paste Image"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "vscode-imgur.pasteImage",
+                "key": "ctrl+alt+v",
+                "mac": "cmd+alt+v",
+                "when": "editorTextFocus"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "tsc -p ./",
+        "compile": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "@types/mocha": "^2.2.41",
+        "@types/node": "^7.0.22",
+        "mocha": "^3.4.2",
+        "typescript": "^2.3.3",
+        "vscode": "^1.1.0"
+    },
+    "dependencies": {
+        "@maxfield/imgur": "^0.4.1"
+    }
 }
