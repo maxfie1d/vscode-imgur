@@ -163,7 +163,10 @@ function paste(storagePath: string) {
         // 画像をBase64形式にエンコードする
         const imageAsBase64 = fs.readFileSync(imagePath, "base64");
         // 一時的に保存された画像をimgurにアップロードする
-        client.Image.upload(imageAsBase64).then(result => {
+        client.Image.upload(imageAsBase64, {
+            // Album id が指定されていればアルバムにアップロードする
+            album: vscode.workspace.getConfiguration("vscode-imgur").get<string>("album_id")
+        }).then(result => {
             const imageUrl = result.data.link;
             editor.edit(edit => {
                 // プレースホルダーと実際の画像のURLを入れ替える

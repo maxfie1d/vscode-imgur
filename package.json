@@ -48,6 +48,11 @@
           "type": "boolean",
           "default": false,
           "description": "True if you prefer user upload, otherwise false"
+        },
+        "vscode-imgur.album_id": {
+          "type": "string",
+          "default": "",
+          "description": "Album id to upload images to"
         }
       }
     },

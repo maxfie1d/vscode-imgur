@@ -61,6 +61,18 @@ give your `client_id`, `client_secret`, and be sure `preferUserUpload` is `true`
 }
 ```
 
+### Album upload
+
+If you want to upload images to a specific album, 
+please add your album id to the settinngs.
+
+```json
+{
+    // If album url is https://imgur.com/a/p1RDg,
+    // then album id is p1RDg.
+    "vscode-imgur.album_id": "<album id here>"
+}
+
 ## Author
 [Maxfield Walker](https://github.com/MaxfieldWalker)
 
