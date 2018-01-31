@@ -1,6 +1,6 @@
 ## vscode-imgur
 
-![Demo](http://i.imgur.com/jPm7V6t.gif)
+![Demo](https://i.imgur.com/jPm7V6t.gif)
 
 
 ## Quick Start
